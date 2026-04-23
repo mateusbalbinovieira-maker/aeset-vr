@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
@@ -225,18 +226,33 @@ function iniciarSensores(){
       S.igx=e.accelerationIncludingGravity.x||0;
       S.igy=e.accelerationIncludingGravity.y||0;
     }
-    // calibra durante o countdown — assim quando o jogo começar já tem o baseVal
     calibrar();
   },true);
+}
+
+function getRawVal(){
+  // igy muda de sinal: esquerda=negativo, direita=positivo
+  return S.igy;
+}
+
+function calcTilt(){
+  var val=0;
+  if(S.hasMot){
+    if(!calibDone){ tiltX=0; smooth=0; return; }
+    var raw = S.igy - baseVal;
+    val = raw / 3;
+  }
+  val=Math.max(-1,Math.min(1,val));
+  smooth=smooth*0.90+val*0.10;
+  tiltX=smooth;
 }
 
 // calibração: valor de repouso subtraído do eixo usado
 var baseVal=0, calibrated=false, calibSamples=[], calibDone=false;
 
 function calibrar(){
-  // coleta 30 amostras do valor em repouso e calcula a média
   if(calibDone) return;
-  var raw = getRawVal();
+  var raw = S.igy;
   calibSamples.push(raw);
   if(calibSamples.length>=30){
     var sum=0;
@@ -255,10 +271,10 @@ function calcTilt(){
   if(S.hasMot){
     calibrar();
     if(!calibDone){ tiltX=0; smooth=0; return; }
-    // subtrai baseVal (≈9.80 em repouso) — resultado ≈ 0 quando parado
     var raw = S.igx - baseVal;
-    // inclinar esquerda = raw negativo, direita = raw positivo
-    // divisor 3 = sensibilidade (±3 m/s² acima do repouso = resposta completa)
+    // usa valor absoluto com sinal baseado na direção
+    // igx > baseVal = direita (positivo)
+    // igx < baseVal = esquerda (negativo)
     val = raw / 3;
   }
   val=Math.max(-1,Math.min(1,val));
