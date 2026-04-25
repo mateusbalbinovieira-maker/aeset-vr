@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
@@ -215,11 +214,8 @@ function resC(){ var w=Math.floor(window.innerWidth/2),h=window.innerHeight; cLe
 resC();
 
 // SENSOR
-var S={gamma:0,igx:0,igy:0,igz:0,mx:0,my:0,mz:0,hasOri:false,hasMot:false};
+var S={igx:0,igy:0,hasMot:false};
 function iniciarSensores(){
-  window.addEventListener('deviceorientation',function(e){
-    if(e.gamma!==null&&e.gamma!==undefined){ S.gamma=e.gamma; S.hasOri=true; }
-  },true);
   window.addEventListener('devicemotion',function(e){
     S.hasMot=true;
     if(e.accelerationIncludingGravity){
@@ -230,31 +226,13 @@ function iniciarSensores(){
   },true);
 }
 
-function getRawVal(){
-  // igy muda de sinal: esquerda=negativo, direita=positivo
-  return S.igy;
-}
-
-function calcTilt(){
-  var val=0;
-  if(S.hasMot){
-    if(!calibDone){ tiltX=0; smooth=0; return; }
-    var raw = S.igy - baseVal;
-    val = raw / 3;
-  }
-  val=Math.max(-1,Math.min(1,val));
-  smooth=smooth*0.90+val*0.10;
-  tiltX=smooth;
-}
-
-// calibração: valor de repouso subtraído do eixo usado
-var baseVal=0, calibrated=false, calibSamples=[], calibDone=false;
+// calibração: coleta valor de repouso e subtrai
+var baseVal=0, calibSamples=[], calibDone=false;
 
 function calibrar(){
   if(calibDone) return;
-  var raw = S.igy;
-  calibSamples.push(raw);
-  if(calibSamples.length>=30){
+  calibSamples.push(S.igy);
+  if(calibSamples.length>=60){
     var sum=0;
     for(var i=0;i<calibSamples.length;i++) sum+=calibSamples[i];
     baseVal=sum/calibSamples.length;
@@ -262,23 +240,12 @@ function calibrar(){
   }
 }
 
-function getRawVal(){
-  return S.igx;
-}
-
 function calcTilt(){
-  var val=0;
-  if(S.hasMot){
-    calibrar();
-    if(!calibDone){ tiltX=0; smooth=0; return; }
-    var raw = S.igx - baseVal;
-    // usa valor absoluto com sinal baseado na direção
-    // igx > baseVal = direita (positivo)
-    // igx < baseVal = esquerda (negativo)
-    val = raw / 3;
-  }
-  val=Math.max(-1,Math.min(1,val));
-  smooth=smooth*0.90+val*0.10;
+  if(!S.hasMot||!calibDone){ tiltX=0; smooth=0; return; }
+  // igy: inclinar esquerda = negativo, direita = positivo
+  var raw=(S.igy-baseVal)/3;
+  raw=Math.max(-1,Math.min(1,raw));
+  smooth=smooth*0.90+raw*0.10;
   tiltX=smooth;
 }
 
