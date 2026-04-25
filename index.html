@@ -83,10 +83,112 @@ html,body{background:#000;font-family:'Segoe UI',sans-serif;overflow:hidden;touc
 .rlogo{font-size:clamp(13px,2.5vw,22px);font-weight:900;color:#00cc44;letter-spacing:4px;}
 .ragain{margin-top:8px;padding:10px 24px;background:transparent;border:2px solid #00cc44;border-radius:8px;color:#00cc44;font-size:clamp(8px,1.7vw,13px);cursor:pointer;font-weight:700;letter-spacing:2px;}
 .goagain{margin-top:8px;padding:10px 24px;background:transparent;border:2px solid #f44;border-radius:8px;color:#f44;font-size:clamp(8px,1.7vw,13px);cursor:pointer;font-weight:700;letter-spacing:2px;}
+/* INSTRUÇÕES */
+#instrucoes{display:none;position:absolute;top:0;left:0;width:100%;height:100%;background:#0d0d0d;z-index:500;overflow:hidden;}
+.ih{width:50%;height:100%;float:left;display:flex;flex-direction:column;align-items:center;justify-content:flex-start;padding:10px 14px;border-right:3px solid #111;overflow-y:auto;}
+.ih:last-child{border-right:none;}
+.ititle{font-size:clamp(11px,2.2vw,18px);font-weight:900;color:#00cc44;letter-spacing:3px;margin-bottom:8px;margin-top:6px;text-align:center;}
+.istep{width:100%;background:rgba(255,255,255,0.03);border:1px solid #222;border-radius:8px;padding:7px 10px;margin-bottom:6px;display:flex;align-items:flex-start;gap:8px;}
+.istep-num{min-width:22px;height:22px;background:#00cc44;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:clamp(7px,1.3vw,11px);font-weight:900;color:#000;margin-top:1px;}
+.istep-txt{font-size:clamp(7px,1.3vw,11px);color:#ccc;line-height:1.5;}
+.istep-txt b{color:#00cc44;}
+.istep-txt span{color:#ffcc00;}
+.isec{font-size:clamp(8px,1.5vw,12px);font-weight:700;color:#fff;margin:8px 0 4px 0;text-align:center;width:100%;}
+.ibtn{width:90%;margin-top:8px;padding:10px;background:transparent;border:2px solid #00cc44;border-radius:8px;color:#00cc44;font-size:clamp(9px,1.7vw,13px);font-weight:800;cursor:pointer;letter-spacing:2px;text-align:center;}
+.ibtn:active{background:rgba(0,204,68,0.2);}
+.iback{width:90%;margin-top:4px;padding:8px;background:transparent;border:1px solid #333;border-radius:8px;color:#555;font-size:clamp(8px,1.4vw,11px);cursor:pointer;letter-spacing:1px;text-align:center;}
+.iback:active{background:rgba(255,255,255,0.05);}
+.ihighlight{background:rgba(0,204,68,0.08);border-color:#00cc4444;}
 </style>
 </head>
 <body>
 <div id="gc">
+
+<!-- TELA DE INSTRUÇÕES -->
+<div id="instrucoes">
+  <div class="ih">
+    <div class="ititle">📖 COMO JOGAR</div>
+    <div class="isec">🔊 1. ATIVE O SOM</div>
+    <div class="istep ihighlight">
+      <div class="istep-num">1</div>
+      <div class="istep-txt">Verifique se o celular <b>não está no modo silencioso</b> — suba o volume físico</div>
+    </div>
+    <div class="isec">📡 2. ATIVE O SENSOR</div>
+    <div class="istep">
+      <div class="istep-num">1</div>
+      <div class="istep-txt">Abra o <b>Chrome</b> e toque nos <b>3 pontinhos ⋮</b> no canto superior direito</div>
+    </div>
+    <div class="istep">
+      <div class="istep-num">2</div>
+      <div class="istep-txt">Vá em <b>Configurações → Configurações do site → Sensores de movimento</b></div>
+    </div>
+    <div class="istep ihighlight">
+      <div class="istep-num">3</div>
+      <div class="istep-txt">Mude para <b>Permitir ✅</b> e volte ao jogo</div>
+    </div>
+    <div class="isec">🥽 3. COMO JOGAR</div>
+    <div class="istep">
+      <div class="istep-num">1</div>
+      <div class="istep-txt">Escolha a série e toque em <b>INICIAR JOGO</b></div>
+    </div>
+    <div class="istep">
+      <div class="istep-num">2</div>
+      <div class="istep-txt">Coloque o celular <b>deitado (horizontal)</b> nos óculos VR durante o countdown de 10 segundos</div>
+    </div>
+    <div class="istep ihighlight">
+      <div class="istep-num">3</div>
+      <div class="istep-txt">Incline a cabeça para <span>← ESQUERDA</span> ou <span>DIREITA →</span> para escolher a resposta</div>
+    </div>
+    <div class="istep">
+      <div class="istep-num">4</div>
+      <div class="istep-txt">Acerte as perguntas para <b>encher a garrafa</b> — se esvaziar é <b style="color:#f44;">Game Over!</b></div>
+    </div>
+    <button class="ibtn" onclick="fecharInstrucoes()">ENTENDI — JOGAR ▶</button>
+    <button class="iback" onclick="fecharInstrucoes()">Voltar ao menu</button>
+  </div>
+  <div class="ih">
+    <div class="ititle">📲 INSTALAR COMO APP</div>
+    <div class="isec">🤖 Android (Chrome)</div>
+    <div class="istep">
+      <div class="istep-num">1</div>
+      <div class="istep-txt">Abra o link do jogo no <b>Chrome</b></div>
+    </div>
+    <div class="istep">
+      <div class="istep-num">2</div>
+      <div class="istep-txt">Toque nos <b>3 pontinhos ⋮</b> no canto superior direito</div>
+    </div>
+    <div class="istep ihighlight">
+      <div class="istep-num">3</div>
+      <div class="istep-txt">Toque em <b>"Adicionar à tela inicial"</b> → <b>"Instalar"</b> ✅</div>
+    </div>
+    <div class="istep">
+      <div class="istep-num">4</div>
+      <div class="istep-txt">O ícone aparece na tela inicial — abre <b>sem barra do navegador!</b></div>
+    </div>
+    <div class="isec">🍎 iPhone (Safari)</div>
+    <div class="istep">
+      <div class="istep-num">1</div>
+      <div class="istep-txt">Abra o link no <b>Safari</b> (não Chrome)</div>
+    </div>
+    <div class="istep">
+      <div class="istep-num">2</div>
+      <div class="istep-txt">Toque no ícone de <b>compartilhar ↑</b> na barra inferior</div>
+    </div>
+    <div class="istep ihighlight">
+      <div class="istep-num">3</div>
+      <div class="istep-txt">Toque em <b>"Adicionar à Tela de Início"</b> → <b>"Adicionar"</b> ✅</div>
+    </div>
+    <div class="isec">🔗 Link do jogo</div>
+    <div class="istep ihighlight">
+      <div class="istep-num">🌐</div>
+      <div class="istep-txt" style="word-break:break-all;color:#00cc44;font-size:clamp(6px,1.1vw,10px);">mateusbalbinovieira-maker.github.io/aeset-vr/</div>
+    </div>
+    <button class="ibtn" onclick="fecharInstrucoes()">ENTENDI — JOGAR ▶</button>
+    <button class="iback" onclick="fecharInstrucoes()">Voltar ao menu</button>
+  </div>
+</div>
+
+<!-- MENU -->
 <div id="menu">
   <div class="mh">
     <div class="mlogo">AESET</div><div class="msub">SEMANA ACADÊMICA</div>
@@ -96,6 +198,7 @@ html,body{background:#000;font-family:'Segoe UI',sans-serif;overflow:hidden;touc
     <button class="gbtn" onclick="selG('9ano')" id="b9">9° Ano — Ensino Fundamental</button>
     <button class="gbtn" onclick="selG('3em')" id="b3">3° Ano — Ensino Médio</button>
     <button class="sbtn" onclick="onStart()">▶ INICIAR JOGO</button>
+    <button class="iback" style="width:90%;margin-top:6px;" onclick="abrirInstrucoes()">❓ Como jogar / Instalar app</button>
   </div>
   <div class="mh">
     <div class="mlogo">AESET</div><div class="msub">SEMANA ACADÊMICA</div>
@@ -105,6 +208,7 @@ html,body{background:#000;font-family:'Segoe UI',sans-serif;overflow:hidden;touc
     <button class="gbtn" onclick="selG('9ano')" id="b92">9° Ano — Ensino Fundamental</button>
     <button class="gbtn" onclick="selG('3em')" id="b32">3° Ano — Ensino Médio</button>
     <button class="sbtn" onclick="onStart()">▶ INICIAR JOGO</button>
+    <button class="iback" style="width:90%;margin-top:6px;" onclick="abrirInstrucoes()">❓ Como jogar / Instalar app</button>
   </div>
 </div>
 <div id="perm">
@@ -350,6 +454,15 @@ function pWater(){
 }
 
 // MENU
+function abrirInstrucoes(){
+  document.getElementById('menu').style.display='none';
+  document.getElementById('instrucoes').style.display='block';
+}
+function fecharInstrucoes(){
+  document.getElementById('instrucoes').style.display='none';
+  document.getElementById('menu').style.display='flex';
+}
+
 function selG(g){
   sg=g; tryFS();
   ['6','9','3'].forEach(function(k){ document.getElementById('b'+k).classList.remove('sel'); var e=document.getElementById('b'+k+'2'); if(e) e.classList.remove('sel'); });
