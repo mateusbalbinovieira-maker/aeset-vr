@@ -12,12 +12,14 @@
 <title>AESET — Math Run VR v4</title>
 <style>
 *{margin:0;padding:0;box-sizing:border-box;}
-html,body{background:#000;font-family:'Segoe UI',sans-serif;overflow:hidden;touch-action:none;width:100%;height:100%;}
-#gc{width:100vw;height:100vh;position:relative;overflow:hidden;}
-#vl,#vr{position:absolute;top:0;width:50%;height:100%;overflow:hidden;}
-#vl{left:0;}#vr{right:0;}
-#vl canvas,#vr canvas{width:100%;height:100%;}
-#div{position:absolute;top:0;left:50%;width:4px;height:100%;background:#000;z-index:100;transform:translateX(-50%);}
+html,body{background:#000;font-family:'Segoe UI',sans-serif;overflow:hidden;touch-action:none;width:100%;height:100%;position:fixed;}
+#gc{width:100vw;height:100vh;position:fixed;top:0;left:0;overflow:hidden;}
+#vl,#vr{position:absolute;top:0;height:100%;overflow:hidden;}
+#vl{left:0;width:50%;}
+#vr{right:0;width:50%;}
+#vl canvas{position:absolute;top:0;left:0;width:100%;height:100%;display:block;}
+#vr canvas{position:absolute;top:0;left:0;width:100%;height:100%;display:block;}
+#div{position:absolute;top:0;left:calc(50% - 2px);width:4px;height:100%;background:#000;z-index:100;}
 #menu{position:absolute;top:0;left:0;width:100%;height:100%;background:#0d0d0d;display:flex;z-index:200;}
 .mh{width:50%;height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:14px;border-right:3px solid #000;}
 .mh:last-child{border-right:none;}
@@ -225,7 +227,7 @@ html,body{background:#000;font-family:'Segoe UI',sans-serif;overflow:hidden;touc
 </div>
 <div id="cd">
   <div class="cdh"><div class="cdico" id="ci0">🥽</div><div class="cdmsg" id="cm0">Coloque o celular<br>nos óculos VR!</div><div class="cdsub">O jogo começa em</div><div class="cdnum" id="cn0">10</div><div class="cdbar"><div class="cdbt"><div class="cdbf" id="cb0" style="width:100%;"></div></div></div><div style="font-size:clamp(5px,1vw,9px);color:#444;margin-top:8px;">🔊 Verifique o volume do celular</div></div>
-  <div class="cdh"><div class="cdico">🥽</div><div class="cdmsg">Coloque o celular<br>nos óculos VR!</div><div class="cdsub">O jogo começa em</div><div class="cdnum" id="cn1">10</div><div class="cdbar"><div class="cdbt"><div class="cdbf" id="cb1" style="width:100%;"></div></div></div><div style="font-size:clamp(5px,1vw,9px);color:#444;margin-top:8px;">🔊 Verifique o volume do celular</div></div>
+  <div class="cdh"><div class="cdico" id="ci1">🥽</div><div class="cdmsg" id="cm1">Coloque o celular nos óculos VR!</div><div class="cdsub">O jogo começa em</div><div class="cdnum" id="cn1">10</div><div class="cdbar"><div class="cdbt"><div class="cdbf" id="cb1" style="width:100%;"></div></div></div><div style="font-size:clamp(5px,1vw,9px);color:#444;margin-top:8px;">🔊 Verifique o volume do celular</div></div>
 </div>
 <div id="vl"><canvas id="cL"></canvas></div>
 <div id="vr"><canvas id="cR"></canvas></div>
@@ -314,7 +316,15 @@ window.addEventListener('orientationchange',function(){ setTimeout(resC,300); })
 // CANVAS
 var cLe=document.getElementById('cL'),cRi=document.getElementById('cR');
 var xL=cLe.getContext('2d'),xR=cRi.getContext('2d');
-function resC(){ var w=Math.floor(window.innerWidth/2),h=window.innerHeight; cLe.width=w; cLe.height=h; cRi.width=w; cRi.height=h; }
+function resC(){
+  var w=Math.floor(window.innerWidth/2);
+  var h=window.innerHeight;
+  cLe.width=w; cLe.height=h;
+  cRi.width=w; cRi.height=h;
+  // garante que o canvas preenche o container
+  cLe.style.width=w+'px'; cLe.style.height=h+'px';
+  cRi.style.width=w+'px'; cRi.style.height=h+'px';
+}
 resC();
 
 // SENSOR
@@ -375,10 +385,19 @@ function startCD(){
 }
 function updCD(n){
   var t=n<=0?'GO!':String(n);
-  document.getElementById('cn0').textContent=t; document.getElementById('cn1').textContent=t;
-  document.getElementById('cb0').style.width=(n/10*100)+'%'; document.getElementById('cb1').style.width=(n/10*100)+'%';
-  if(n<=3&&n>0){ document.getElementById('ci0').textContent='🚀'; document.getElementById('cm0').textContent='Prepare-se!'; }
-  else if(n<=0){ document.getElementById('ci0').textContent='🏃'; document.getElementById('cm0').textContent='Vamos lá!'; }
+  var ico=n<=3&&n>0?'🚀':n<=0?'🏃':'🥽';
+  var msg=n<=3&&n>0?'Prepare-se!':n<=0?'Vamos lá!':'Coloque o celular nos óculos VR!';
+  document.getElementById('cn0').textContent=t;
+  document.getElementById('cn1').textContent=t;
+  document.getElementById('cb0').style.width=(n/10*100)+'%';
+  document.getElementById('cb1').style.width=(n/10*100)+'%';
+  document.getElementById('ci0').textContent=ico;
+  document.getElementById('cm0').textContent=msg;
+  // atualiza lado direito também
+  var ci1=document.getElementById('ci1');
+  var cm1=document.getElementById('cm1');
+  if(ci1) ci1.textContent=ico;
+  if(cm1) cm1.textContent=msg;
 }
 
 // QUESTÕES
